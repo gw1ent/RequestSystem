@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Администрирование — Система учёта заявок</title>
+
+<link href="../static/css/admin.css" rel="stylesheet"/></head>
+<body>
+<header class="header">
+<div class="header-inner">
+<div class="header-left">
+<div class="logo-box"><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></div>
+<span class="logo-text">Система учёта заявок</span>
+<span class="header-sep">|</span>
+<span class="header-nav">Администрирование</span>
+</div>
+<div class="header-right">
+<span class="role-badge">Администратор</span>
+<div class="user-avatar" id="userAvatar"></div>
+<span class="user-name" id="userName"></span>
+<button aria-label="Выйти из системы" class="btn-logout" id="btnLogout" title="Выйти из системы"><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+</div>
+</div>
+</header>
+<nav class="nav">
+<div class="nav-inner">
+<button class="nav-btn" onclick="window.location.href='./tickets.html'">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        Заявки
+      </button>
+<button class="nav-btn active">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        Администрирование
+      </button>
+</div>
+</nav>
+<main class="main">
+<h1 class="page-title">Панель администратора</h1>
+<div class="tabs">
+<button class="tab-btn active" id="tabUsers" onclick="switchTab('users')">Пользователи (<span id="usersCount">0</span>)</button>
+<button class="tab-btn" id="tabCategories" onclick="switchTab('categories')">Категории (<span id="catsCount">0</span>)</button>
+</div>
+<!-- Users section -->
+<div id="usersSection">
+<div class="section-header">
+<button class="btn-add" onclick="showUserModal()">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+          Добавить пользователя
+        </button>
+</div>
+<div class="filters">
+<div class="filters-grid">
+<div class="search-wrap">
+<svg class="s-icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<input class="search-input" id="userSearch" placeholder="Поиск по ФИО или логину..." type="text"/>
+</div>
+<select class="filter-select" id="userRoleFilter">
+    <option value="">Все роли</option>
+    <option value="admin">Администратор</option>
+    <option value="operator">Оператор</option>
+    <option value="executor">Исполнитель</option>
+    <option value="applicant">Заявитель</option>
+</select>
+<select class="filter-select" id="userStatusFilter">
+<option value="">Все статусы</option>
+<option value="active">Активен</option>
+<option value="blocked">Заблокирован</option>
+</select>
+</div>
+<div class="filters-actions" id="userResetWrap" style="display:none">
+<button class="btn-reset" id="userResetBtn">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+            Сбросить
+          </button>
+</div>
+</div>
+<div class="table-wrap">
+<div class="table-scroll">
+<table>
+<thead><tr><th>Пользователь</th><th>Логин</th><th>Роль</th><th>Статус</th><th>Действия</th></tr></thead>
+<tbody id="usersTableBody"></tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Categories section -->
+<div id="categoriesSection" style="display:none">
+<div class="section-header">
+<button class="btn-add" onclick="showCategoryModal()">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+          Добавить категорию
+        </button>
+</div>
+<div class="filters">
+<div class="search-wrap">
+<svg class="s-icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<input class="search-input" id="catSearch" placeholder="Поиск по названию категории..." type="text"/>
+</div>
+</div>
+<div class="cat-list" id="catList"></div>
+</div>
+</main>
+<footer class="footer"><div class="footer-inner">Система учёта заявок © 2026. Все данные хранятся локально в браузере.</div></footer>
+<div id="modalsContainer"></div>
+<script src="../static/js/admin.js"></script>
+</body>
+</html>
