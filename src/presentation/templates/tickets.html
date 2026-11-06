@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Заявки — Система учёта заявок</title>
+
+<link href="../static/css/tickets.css" rel="stylesheet"/></head>
+<body>
+<!-- Header -->
+<header class="header">
+<div class="header-inner">
+<div class="header-left">
+<div class="logo-box"><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></div>
+<span class="logo-text">Система учёта заявок</span>
+<span class="header-sep">|</span>
+<span class="header-nav">Заявки</span>
+</div>
+<div class="header-right">
+<span class="role-badge" id="roleBadge"></span>
+<div class="user-avatar" id="userAvatar"></div>
+<span class="user-name" id="userName"></span>
+<button aria-label="Выйти из системы" class="btn-logout" id="btnLogout" title="Выйти из системы">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+</header>
+<!-- Nav -->
+<nav class="nav">
+<div class="nav-inner">
+<button class="nav-btn active">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        Заявки
+      </button>
+<button class="nav-btn" id="navAdmin" onclick="window.location.href='./admin.html'" style="display:none">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        Администрирование
+      </button>
+</div>
+</nav>
+<!-- Main -->
+<main class="main">
+<div class="page-header">
+<div>
+<h1 class="page-title" id="pageTitle">Все заявки</h1>
+<p class="page-count" id="pageCount">Найдено заявок: 0</p>
+</div>
+<button class="btn-create" id="btnCreate" onclick="window.location.href='./ticket-create.html'" style="display:none">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        Создать заявку
+      </button>
+</div>
+<div class="filters">
+<div class="filters-grid">
+<div class="search-wrap">
+<svg class="s-icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<input class="search-input" id="searchInput" placeholder="Поиск по номеру, теме, описанию..." type="text"/>
+</div>
+<select class="filter-select" id="statusFilter">
+<option value="">Все статусы</option>
+<option value="new">Новая</option>
+<option value="in_progress">В работе</option>
+<option value="completed">Выполнена</option>
+<option value="closed">Закрыта</option>
+</select>
+<select class="filter-select" id="categoryFilter">
+<option value="">Все категории</option>
+</select>
+</div>
+<div class="filters-actions" id="resetWrap" style="display:none">
+<button class="btn-reset" id="btnReset">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+          Сбросить
+        </button>
+</div>
+</div>
+<div class="ticket-list" id="ticketList"></div>
+<div class="empty-state" id="emptyState" style="display:none"></div>
+</main>
+<footer class="footer"><div class="footer-inner">Система учёта заявок © 2026.</div></footer>
+<!-- Logout Modal -->
+<div class="modal-overlay" id="logoutModal" style="display:none">
+<div class="modal-box">
+<div class="modal-icon warning"><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></div>
+<div class="modal-title">Выход из системы</div>
+<div class="modal-text">Вы уверены, что хотите выйти? Несохранённые данные могут быть потеряны.</div>
+<div class="modal-actions">
+<button class="btn-cancel" id="logoutCancel">Остаться</button>
+<button class="btn-warning" id="logoutConfirm">Выйти</button>
+</div>
+</div>
+</div>
+<!-- Delete Modal -->
+<div class="modal-overlay" id="deleteModal" style="display:none">
+<div class="modal-box">
+<div class="modal-icon danger"><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></div>
+<div class="modal-title">Удаление заявки</div>
+<div class="modal-text">Вы уверены, что хотите удалить эту заявку? Это действие нельзя отменить.</div>
+<div class="modal-actions">
+<button class="btn-cancel" id="deleteCancel">Отмена</button>
+<button class="btn-danger" id="deleteConfirm">Удалить</button>
+</div>
+</div>
+</div>
+<!-- Toast -->
+<div class="toast toast-success" id="toast" style="display:none">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span id="toastText"></span>
+<button aria-label="Закрыть" class="toast-close" id="toastClose"><svg fill="none" height="16" stroke="currentColor" viewbox="0 0 24 24" width="16"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+</div>
+<script src="../static/js/tickets.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Редактирование — Система учёта заявок</title>
+
+<link href="../static/css/ticket-edit.css" rel="stylesheet"/></head>
+<body>
+<header class="header">
+<div class="header-inner">
+<div class="header-left">
+<div class="logo-box"><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></div>
+<span class="logo-text">Система учёта заявок</span>
+<span class="header-sep">|</span>
+<span class="header-nav">Редактирование</span>
+</div>
+<div class="header-right">
+<span class="role-badge" id="roleBadge"></span>
+<div class="user-avatar" id="userAvatar"></div>
+<span class="user-name" id="userName"></span>
+<button aria-label="Выйти из системы" class="btn-logout" id="btnLogout" title="Выйти из системы"><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+</div>
+</div>
+</header>
+<nav class="nav">
+<div class="nav-inner">
+<button class="nav-btn active" onclick="window.location.href='./tickets.html'">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        Заявки
+      </button>
+<button class="nav-btn" id="navAdmin" onclick="window.location.href='./admin.html'" style="display:none">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        Администрирование
+      </button>
+</div>
+</nav>
+<main class="main">
+<div class="content-wrap">
+<div class="page-back">
+<button aria-label="Вернуться" class="btn-back" id="btnBack"><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+<h1 class="page-title" id="pageTitle">Редактирование</h1>
+</div>
+<div class="success-msg" id="successBox" style="display:none">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Заявка успешно обновлена</span>
+</div>
+<form class="form-card" id="editForm">
+<div class="form-body">
+<div class="info-box" id="infoBox"></div>
+<div class="form-group">
+<label class="form-label" for="title">Тема заявки <span class="req">*</span></label>
+<input class="form-input" id="title" type="text"/>
+<div class="field-error" id="titleError"><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span></span></div>
+</div>
+<div class="form-group">
+<label class="form-label" for="category">Категория <span class="req">*</span></label>
+<select class="form-select" id="category"></select>
+<div class="field-error" id="categoryError"><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span></span></div>
+</div>
+<div class="form-group">
+<label class="form-label" for="description">Описание <span class="req">*</span></label>
+<textarea class="form-textarea" id="description"></textarea>
+<div class="field-error" id="descriptionError"><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg><span></span></div>
+</div>
+</div>
+<div class="form-footer">
+<button class="btn-cancel" id="btnCancel" type="button">Отмена</button>
+<button class="btn-submit" type="submit">Сохранить изменения</button>
+</div>
+</form>
+</div>
+</main>
+<footer class="footer"><div class="footer-inner">Система учёта заявок © 2026.</div></footer>
+<!-- Logout Modal -->
+<div class="modal-overlay" id="logoutModal" style="display:none">
+<div class="modal-box">
+<div class="modal-icon warning"><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></div>
+<div class="modal-title">Выход из системы</div>
+<div class="modal-text">Вы уверены, что хотите выйти? Несохранённые данные могут быть потеряны.</div>
+<div class="modal-actions">
+<button class="btn-modal-cancel" id="logoutCancel">Остаться</button>
+<button class="btn-modal-warn" id="logoutConfirm">Выйти</button>
+</div>
+</div>
+</div>
+<script src="../static/js/ticket-edit.js"></script>
+</body>
+</html>
