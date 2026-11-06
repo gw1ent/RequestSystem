@@ -17,6 +17,9 @@ def get_requests_by_applicant(applicant_id: int):
     """Возвращает заявки указанного заявителя."""
     return request_repository.get_requests_by_applicant(applicant_id)
 
+def get_requests_by_executor(executor_id: int):
+    """Возвращает заявки, назначенные конкретному исполнителю."""
+    return request_repository.get_requests_by_executor(executor_id)
 
 def request_exists(request_id: int) -> bool:
     """Проверяет, существует ли заявка."""
@@ -233,3 +236,16 @@ def close_request(request_id: int, actor_id: int):
         raise ValueError("Не удалось закрыть заявку")
 
     return updated
+
+def delete_request(request_id: int) -> bool:
+    """Удаляет заявку по ID."""
+
+    if request_repository.get_request_by_id(request_id) is None:
+        raise ValueError("Заявка не найдена")
+
+    deleted = request_repository.delete_request(request_id)
+
+    if not deleted:
+        raise ValueError("Не удалось удалить заявку")
+
+    return True

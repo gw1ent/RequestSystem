@@ -24,6 +24,16 @@ def get_all_users():
     return user_repository.get_all_users()
 
 
+def get_executors():
+    """Возвращает список активных исполнителей (для назначения на заявки)."""
+
+    return [
+        user
+        for user in user_repository.get_all_users()
+        if user["role"] == "Исполнитель" and not user["is_blocked"]
+    ]
+
+
 def authenticate_user(login: str, password: str):
     """Проверяет логин, пароль и блокировку пользователя."""
 
@@ -85,6 +95,7 @@ def create_user(
         full_name=full_name.strip(),
         role=role
     )
+
 
 def update_user(
     user_id: int,

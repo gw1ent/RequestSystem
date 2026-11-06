@@ -116,6 +116,43 @@ def get_requests_by_applicant(applicant_id: int) -> list[dict]:
     finally:
         connection.close()
 
+def get_requests_by_executor(executor_id: int) -> list[dict]:
+    """Возвращает заявки, назначенные конкретному исполнителю."""
+
+    connection = get_connection()
+
+    try:
+        cursor = connection.execute(
+            """
+            SELECT
+                r.id,
+                r.subject,
+                r.description,
+                r.applicant_id,
+                applicant.full_name AS applicant_name,
+                r.executor_id,
+                executor.full_name AS executor_name,
+                r.status_id,
+                s.name AS status_name,
+                r.category_id,
+                c.name AS category_name,
+                r.created_at
+            FROM Requests r
+            JOIN Users applicant ON r.applicant_id = applicant.id
+            LEFT JOIN Users executor ON r.executor_id = executor.id
+            JOIN Statuses s ON r.status_id = s.id
+            JOIN Categories c ON r.category_id = c.id
+            WHERE r.executor_id = ?
+            ORDER BY r.created_at DESC, r.id DESC
+            """,
+            (executor_id,)
+        )
+
+        return [dict(row) for row in cursor.fetchall()]
+
+    finally:
+        connection.close()
+
 def create_request(
     subject: str,
     description: str,
@@ -290,6 +327,33 @@ def update_request_status(
         connection.commit()
 
         return get_request_by_id(request_id)
+
+    except Exception:
+        connection.rollback()
+        raise
+
+    finally:
+        connection.close()
+
+def delete_request(request_id: int) -> bool:
+    """Удаляет заявку по ID."""
+
+    connection = get_connection()
+
+    try:
+        cursor = connection.execute(
+            """
+            DELETE FROM Requests
+            WHERE id = ?
+            """,
+            (request_id,)
+        )
+
+        if cursor.rowcount == 0:
+            return False
+
+        connection.commit()
+        return True
 
     except Exception:
         connection.rollback()
