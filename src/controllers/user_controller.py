@@ -84,6 +84,12 @@ def update_user(
 ):
     """Изменяет данные пользователя."""
 
+    if user_id == current_user["id"] and data.role is not None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Нельзя изменять собственную роль"
+        )
+
     try:
         user = user_service.update_user(
             user_id=user_id,

@@ -11,11 +11,22 @@ function escHtml(value) {
 
 function formatDate(iso) {
     if (!iso) return '—';
-    const d = new Date(iso);
+
+    const normalized = String(iso).replace(' ', 'T');
+    const hasTimezone = /(?:Z|[+-]\d{2}:\d{2})$/i.test(normalized);
+
+    const d = new Date(
+        hasTimezone ? normalized : `${normalized}Z`
+    );
+
     if (Number.isNaN(d.getTime())) return iso;
-    return d.toLocaleDateString('ru-RU', {
-        day: '2-digit', month: '2-digit', year: 'numeric',
-        hour: '2-digit', minute: '2-digit'
+
+    return d.toLocaleString('ru-RU', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
     });
 }
 
