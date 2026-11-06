@@ -115,3 +115,185 @@ def get_requests_by_applicant(applicant_id: int) -> list[dict]:
 
     finally:
         connection.close()
+
+def create_request(
+    subject: str,
+    description: str,
+    applicant_id: int,
+    category_id: int,
+    status_id: int
+) -> dict:
+    """Создаёт заявку и возвращает её данные."""
+
+    connection = get_connection()
+
+    try:
+        cursor = connection.execute(
+            """
+            INSERT INTO Requests (
+                subject,
+                description,
+                applicant_id,
+                category_id,
+                status_id
+            )
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (
+                subject,
+                description,
+                applicant_id,
+                category_id,
+                status_id
+            )
+        )
+
+        request_id = cursor.lastrowid
+        connection.commit()
+
+        return get_request_by_id(request_id)
+
+    except Exception:
+        connection.rollback()
+        raise
+
+    finally:
+        connection.close()
+
+def get_status_id_by_name(status_name: str) -> Optional[int]:
+    """Возвращает ID статуса по названию."""
+
+    connection = get_connection()
+
+    try:
+        cursor = connection.execute(
+            """
+            SELECT id
+            FROM Statuses
+            WHERE name = ?
+            """,
+            (status_name,)
+        )
+
+        row = cursor.fetchone()
+        return row["id"] if row else None
+
+    finally:
+        connection.close()
+
+def update_request(
+    request_id: int,
+    subject: str,
+    description: str,
+    category_id: int
+) -> Optional[dict]:
+    """Обновляет основные данные заявки."""
+
+    connection = get_connection()
+
+    try:
+        cursor = connection.execute(
+            """
+            UPDATE Requests
+            SET subject = ?,
+                description = ?,
+                category_id = ?
+            WHERE id = ?
+            """,
+            (subject, description, category_id, request_id)
+        )
+
+        if cursor.rowcount == 0:
+            return None
+
+        connection.commit()
+
+        return get_request_by_id(request_id)
+
+    except Exception:
+        connection.rollback()
+        raise
+
+    finally:
+        connection.close()
+
+def assign_executor(
+    request_id: int,
+    executor_id: int,
+    new_status_id: int,
+    in_progress_status_id: int
+) -> Optional[dict]:
+    """Назначает исполнителя и переводит заявку в работу."""
+
+    connection = get_connection()
+
+    try:
+        cursor = connection.execute(
+            """
+            UPDATE Requests
+            SET executor_id = ?,
+                status_id = ?
+            WHERE id = ?
+              AND status_id IN (?, ?)
+            """,
+            (
+                executor_id,
+                in_progress_status_id,
+                request_id,
+                new_status_id,
+                in_progress_status_id
+            )
+        )
+
+        if cursor.rowcount == 0:
+            return None
+
+        connection.commit()
+
+        return get_request_by_id(request_id)
+
+    except Exception:
+        connection.rollback()
+        raise
+
+    finally:
+        connection.close()
+
+def update_request_status(
+    request_id: int,
+    new_status_id: int,
+    allowed_status_ids: list[int]
+) -> Optional[dict]:
+    """Меняет статус заявки, если текущий статус допускает переход."""
+
+    if not allowed_status_ids:
+        return None
+
+    placeholders = ", ".join("?" for _ in allowed_status_ids)
+
+    connection = get_connection()
+
+    try:
+        cursor = connection.execute(
+            f"""
+            UPDATE Requests
+            SET status_id = ?
+            WHERE id = ?
+              AND status_id IN ({placeholders})
+            """,
+            (new_status_id, request_id, *allowed_status_ids)
+        )
+
+        if cursor.rowcount == 0:
+            return None
+
+        connection.commit()
+
+        return get_request_by_id(request_id)
+
+    except Exception:
+        connection.rollback()
+        raise
+
+    finally:
+        connection.close()
