@@ -88,7 +88,7 @@ async function startPage() {
         apiJson('/api/requests/')
     ]);
 
-    categories = categoriesData.categories;
+    categories = categoriesData;
 
     ticketsData = requests.map(request => ({
         id: request.id,

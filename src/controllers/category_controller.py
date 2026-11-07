@@ -18,11 +18,9 @@ router = APIRouter(
 def get_categories(
     current_user: dict = Depends(get_current_user)
 ):
-    """Возвращает список категорий."""
+    """Возвращает список всех категорий."""
 
-    return {
-        "categories": category_service.get_all_categories()
-    }
+    return category_service.get_all_categories()
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)

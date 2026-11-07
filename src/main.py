@@ -4,6 +4,7 @@ from src.controllers.auth_controller import router as auth_router
 from src.controllers.user_controller import router as user_router
 from src.controllers.category_controller import router as category_router
 from src.controllers.request_controller import router as request_router
+from src.controllers.status_controller import router as status_router
 from pathlib import Path
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -51,6 +52,8 @@ app.include_router(auth_router)
 app.include_router(user_router)
 app.include_router(category_router)
 app.include_router(request_router)
+app.include_router(status_router)
+
 # Главная страница
 @app.get("/", include_in_schema=False)
 def index_page():

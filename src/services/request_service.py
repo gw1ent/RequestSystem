@@ -1,25 +1,56 @@
 from src.repositories import request_repository
 from src.repositories import user_repository
 from src.repositories import category_repository
-
+from typing import Optional
 
 def get_request(request_id: int):
     """Возвращает заявку по её ID."""
     return request_repository.get_request_by_id(request_id)
 
 
-def get_all_requests():
-    """Возвращает список всех заявок."""
-    return request_repository.get_all_requests()
+def get_all_requests(
+    status_id: Optional[int] = None,
+    category_id: Optional[int] = None,
+    search: Optional[str] = None
+):
+    """Возвращает список всех заявок с учётом фильтров."""
+
+    return request_repository.get_all_requests(
+        status_id=status_id,
+        category_id=category_id,
+        search=search
+    )
 
 
-def get_requests_by_applicant(applicant_id: int):
-    """Возвращает заявки указанного заявителя."""
-    return request_repository.get_requests_by_applicant(applicant_id)
+def get_requests_by_applicant(
+    applicant_id: int,
+    status_id: Optional[int] = None,
+    category_id: Optional[int] = None,
+    search: Optional[str] = None
+):
+    """Возвращает заявки заявителя с учётом фильтров."""
 
-def get_requests_by_executor(executor_id: int):
-    """Возвращает заявки, назначенные конкретному исполнителю."""
-    return request_repository.get_requests_by_executor(executor_id)
+    return request_repository.get_requests_by_applicant(
+        applicant_id=applicant_id,
+        status_id=status_id,
+        category_id=category_id,
+        search=search
+    )
+
+def get_requests_by_executor(
+    executor_id: int,
+    status_id: Optional[int] = None,
+    category_id: Optional[int] = None,
+    search: Optional[str] = None
+):
+    """Возвращает заявки исполнителя с учётом фильтров."""
+
+    return request_repository.get_requests_by_executor(
+        executor_id=executor_id,
+        status_id=status_id,
+        category_id=category_id,
+        search=search
+    )
 
 def request_exists(request_id: int) -> bool:
     """Проверяет, существует ли заявка."""

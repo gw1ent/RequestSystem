@@ -1,7 +1,77 @@
-
 from typing import Optional
 
 from src.database.connection import get_connection
+
+def _get_requests(
+    applicant_id: Optional[int] = None,
+    executor_id: Optional[int] = None,
+    status_id: Optional[int] = None,
+    category_id: Optional[int] = None,
+    search: Optional[str] = None
+) -> list[dict]:
+    """Возвращает заявки с учётом заданных фильтров."""
+
+    connection = get_connection()
+
+    try:
+        query = """
+            SELECT
+                r.id,
+                r.subject,
+                r.description,
+                r.applicant_id,
+                applicant.full_name AS applicant_name,
+                r.executor_id,
+                executor.full_name AS executor_name,
+                r.status_id,
+                s.name AS status_name,
+                r.category_id,
+                c.name AS category_name,
+                r.created_at
+            FROM Requests r
+            JOIN Users applicant ON r.applicant_id = applicant.id
+            LEFT JOIN Users executor ON r.executor_id = executor.id
+            JOIN Statuses s ON r.status_id = s.id
+            JOIN Categories c ON r.category_id = c.id
+        """
+
+        conditions = []
+        parameters = []
+
+        if applicant_id is not None:
+            conditions.append("r.applicant_id = ?")
+            parameters.append(applicant_id)
+
+        if executor_id is not None:
+            conditions.append("r.executor_id = ?")
+            parameters.append(executor_id)
+
+        if status_id is not None:
+            conditions.append("r.status_id = ?")
+            parameters.append(status_id)
+
+        if category_id is not None:
+            conditions.append("r.category_id = ?")
+            parameters.append(category_id)
+
+        if search and search.strip():
+            conditions.append(
+                "(r.subject LIKE ? OR r.description LIKE ?)"
+            )
+            search_value = f"%{search.strip()}%"
+            parameters.extend([search_value, search_value])
+
+        if conditions:
+            query += " WHERE " + " AND ".join(conditions)
+
+        query += " ORDER BY r.created_at DESC, r.id DESC"
+
+        cursor = connection.execute(query, parameters)
+
+        return [dict(row) for row in cursor.fetchall()]
+
+    finally:
+        connection.close()
 
 
 def get_request_by_id(request_id: int) -> Optional[dict]:
@@ -43,115 +113,49 @@ def get_request_by_id(request_id: int) -> Optional[dict]:
         connection.close()
 
 
-def get_all_requests() -> list[dict]:
-    """Возвращает все заявки со связанными данными."""
+def get_all_requests(
+    status_id: Optional[int] = None,
+    category_id: Optional[int] = None,
+    search: Optional[str] = None
+) -> list[dict]:
+    """Возвращает все заявки с учётом фильтров."""
 
-    connection = get_connection()
-
-    try:
-        cursor = connection.execute(
-            """
-            SELECT
-                r.id,
-                r.subject,
-                r.description,
-                r.applicant_id,
-                applicant.full_name AS applicant_name,
-                r.executor_id,
-                executor.full_name AS executor_name,
-                r.status_id,
-                s.name AS status_name,
-                r.category_id,
-                c.name AS category_name,
-                r.created_at
-            FROM Requests r
-            JOIN Users applicant ON r.applicant_id = applicant.id
-            LEFT JOIN Users executor ON r.executor_id = executor.id
-            JOIN Statuses s ON r.status_id = s.id
-            JOIN Categories c ON r.category_id = c.id
-            ORDER BY r.created_at DESC, r.id DESC
-            """
-        )
-
-        return [dict(row) for row in cursor.fetchall()]
-
-    finally:
-        connection.close()
+    return _get_requests(
+        status_id=status_id,
+        category_id=category_id,
+        search=search
+    )
 
 
-def get_requests_by_applicant(applicant_id: int) -> list[dict]:
-    """Возвращает заявки конкретного заявителя."""
+def get_requests_by_applicant(
+    applicant_id: int,
+    status_id: Optional[int] = None,
+    category_id: Optional[int] = None,
+    search: Optional[str] = None
+) -> list[dict]:
+    """Возвращает заявки заявителя с учётом фильтров."""
 
-    connection = get_connection()
+    return _get_requests(
+        applicant_id=applicant_id,
+        status_id=status_id,
+        category_id=category_id,
+        search=search
+    )
 
-    try:
-        cursor = connection.execute(
-            """
-            SELECT
-                r.id,
-                r.subject,
-                r.description,
-                r.applicant_id,
-                applicant.full_name AS applicant_name,
-                r.executor_id,
-                executor.full_name AS executor_name,
-                r.status_id,
-                s.name AS status_name,
-                r.category_id,
-                c.name AS category_name,
-                r.created_at
-            FROM Requests r
-            JOIN Users applicant ON r.applicant_id = applicant.id
-            LEFT JOIN Users executor ON r.executor_id = executor.id
-            JOIN Statuses s ON r.status_id = s.id
-            JOIN Categories c ON r.category_id = c.id
-            WHERE r.applicant_id = ?
-            ORDER BY r.created_at DESC, r.id DESC
-            """,
-            (applicant_id,)
-        )
+def get_requests_by_executor(
+    executor_id: int,
+    status_id: Optional[int] = None,
+    category_id: Optional[int] = None,
+    search: Optional[str] = None
+) -> list[dict]:
+    """Возвращает заявки исполнителя с учётом фильтров."""
 
-        return [dict(row) for row in cursor.fetchall()]
-
-    finally:
-        connection.close()
-
-def get_requests_by_executor(executor_id: int) -> list[dict]:
-    """Возвращает заявки, назначенные конкретному исполнителю."""
-
-    connection = get_connection()
-
-    try:
-        cursor = connection.execute(
-            """
-            SELECT
-                r.id,
-                r.subject,
-                r.description,
-                r.applicant_id,
-                applicant.full_name AS applicant_name,
-                r.executor_id,
-                executor.full_name AS executor_name,
-                r.status_id,
-                s.name AS status_name,
-                r.category_id,
-                c.name AS category_name,
-                r.created_at
-            FROM Requests r
-            JOIN Users applicant ON r.applicant_id = applicant.id
-            LEFT JOIN Users executor ON r.executor_id = executor.id
-            JOIN Statuses s ON r.status_id = s.id
-            JOIN Categories c ON r.category_id = c.id
-            WHERE r.executor_id = ?
-            ORDER BY r.created_at DESC, r.id DESC
-            """,
-            (executor_id,)
-        )
-
-        return [dict(row) for row in cursor.fetchall()]
-
-    finally:
-        connection.close()
+    return _get_requests(
+        executor_id=executor_id,
+        status_id=status_id,
+        category_id=category_id,
+        search=search
+    )
 
 def create_request(
     subject: str,

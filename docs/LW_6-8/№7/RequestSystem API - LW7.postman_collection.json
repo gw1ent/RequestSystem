@@ -1,0 +1,341 @@
+{
+  "info": {
+    "_postman_id": "8d92baa3-4e4b-4eb4-be10-2507ecfba0e0",
+    "name": "RequestSystem API - LW7",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "60023067",
+    "_collection_link": "https://go.postman.co/collection/60023067-8d92baa3-4e4b-4eb4-be10-2507ecfba0e0?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "01 - Список заявок",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "session={{session_cookie}}"
+          }
+        ],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/requests/"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "02 - Фильтр по статусу",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "session={{session_cookie}}"
+          }
+        ],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/requests/?status_id=1",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "requests",
+            ""
+          ],
+          "query": [
+            {
+              "key": "status_id",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "03 - Фильтр по категории",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "session={{session_cookie}}"
+          }
+        ],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/requests/?category_id=1",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "requests",
+            ""
+          ],
+          "query": [
+            {
+              "key": "category_id",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "04 - Поиск по тексту",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "session={{session_cookie}}"
+          }
+        ],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/requests/?search=Тестовая заявка",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "requests",
+            ""
+          ],
+          "query": [
+            {
+              "key": "search",
+              "value": "Тестовая заявка"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "05 - Комбинированная фильтрация",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "session={{session_cookie}}"
+          }
+        ],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/requests/?status_id=1&category_id=1",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "requests",
+            ""
+          ],
+          "query": [
+            {
+              "key": "status_id",
+              "value": "1"
+            },
+            {
+              "key": "category_id",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "06 - Получение заявки по ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "session={{session_cookie}}"
+          }
+        ],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/requests/18",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "requests",
+            "18"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "07 - Получение несуществующей заявки",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "session={{session_cookie}}"
+          }
+        ],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/requests/99999",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "requests",
+            "99999"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "08 - Создание заявки",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "session={{session_cookie}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"subject\": \"Заявка из Postman\",\r\n  \"description\": \"Проверка создания заявки в рамках лабораторной работы №7\",\r\n  \"category_id\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/requests/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "requests",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "09 - Редактирование заявки",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "session={{session_cookie}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"subject\": \"Заявка из Postman — изменена\",\r\n  \"description\": \"Проверка редактирования заявки через Postman\",\r\n  \"category_id\": 2\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/requests/20",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "requests",
+            "20"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "10 - Удаление заявки",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "session={{session_cookie}}"
+          }
+        ],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/requests/20",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "requests",
+            "20"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "session_cookie",
+      "value": ""
+    }
+  ]
+}
