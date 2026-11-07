@@ -25,7 +25,7 @@ def get_users(
     for user in users:
         user.pop("password_hash", None)
 
-    return {"users": users}
+    return users
 
 
 @router.get("/executors")

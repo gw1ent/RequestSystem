@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 
 from src.controllers.auth_dependency import (
     get_current_user,
@@ -20,20 +20,49 @@ router = APIRouter(
 
 @router.get("/")
 def get_requests(
+    status_id: int | None = Query(
+        default=None,
+        gt=0,
+        description="Фильтр по ID статуса"
+    ),
+    category_id: int | None = Query(
+        default=None,
+        gt=0,
+        description="Фильтр по ID категории"
+    ),
+    search: str | None = Query(
+        default=None,
+        max_length=200,
+        description="Поиск по теме и описанию заявки"
+    ),
     user: dict = Depends(get_current_user)
 ):
-    """Возвращает список заявок в зависимости от роли пользователя."""
+    """Возвращает список заявок с учётом роли пользователя и фильтров."""
 
     role = user["role"]
 
     if role == "Заявитель":
-        return request_service.get_requests_by_applicant(user["id"])
+        return request_service.get_requests_by_applicant(
+            applicant_id=user["id"],
+            status_id=status_id,
+            category_id=category_id,
+            search=search
+        )
 
     if role == "Исполнитель":
-        return request_service.get_requests_by_executor(user["id"])
+        return request_service.get_requests_by_executor(
+            executor_id=user["id"],
+            status_id=status_id,
+            category_id=category_id,
+            search=search
+        )
 
     if role in ("Оператор", "Администратор"):
-        return request_service.get_all_requests()
+        return request_service.get_all_requests(
+            status_id=status_id,
+            category_id=category_id,
+            search=search
+        )
 
     raise HTTPException(
         status_code=status.HTTP_403_FORBIDDEN,
