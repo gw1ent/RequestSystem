@@ -28,6 +28,10 @@ app = FastAPI(
     version="1.0.0"
 )
 
+@app.get("/health", include_in_schema=False)
+def health_check():
+    return {"status": "healthy"}
+
 # Пути к HTML-страницам и статическим файлам
 PRESENTATION_DIR = Path(__file__).resolve().parent / "presentation"
 TEMPLATES_DIR = PRESENTATION_DIR / "templates"

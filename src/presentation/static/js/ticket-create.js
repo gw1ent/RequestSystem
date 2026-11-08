@@ -50,7 +50,7 @@ async function init() {
 
         // Категории
         const catSelect = document.getElementById('category');
-        catData.categories.forEach(c => {
+        catData.forEach(c => {
             const opt = document.createElement('option');
             opt.value = c.id;
             opt.textContent = c.name;

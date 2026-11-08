@@ -87,12 +87,12 @@ async function init() {
 
 async function loadUsers() {
     const data = await apiJson('/api/users/');
-    usersData = data.users;
+    usersData = data;
 }
 
 async function loadCategories() {
     const data = await apiJson('/api/categories/');
-    categoriesData = data.categories;
+    categoriesData = data;
 }
 
 // ===== Табы =====

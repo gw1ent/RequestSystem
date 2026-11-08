@@ -122,7 +122,7 @@ async function init() {
         ]);
 
         ticket = requestData;
-        categories = catsData.categories;
+        categories = catsData;
 
         render();
 
