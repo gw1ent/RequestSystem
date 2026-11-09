@@ -62,7 +62,7 @@ async function init() {
             apiJson('/api/categories/')
         ]);
 
-        setupForm(request, catsData.categories);
+        setupForm(request, catsData);
 
     } catch (error) {
         console.error('Ошибка инициализации:', error);
