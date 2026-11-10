@@ -1,0 +1,46 @@
+python -m pytest testing/lab10/test_request_service.py -v
+=============================================================================================================================================== test session starts ===============================================================================================================================================
+platform win32 -- Python 3.13.2, pytest-9.2.0, pluggy-1.7.0 -- E:\Program files\PyCharm\Retinscky_Artem_isip308_RequestSystem\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: E:\Program files\PyCharm\Retinscky_Artem_isip308_RequestSystem
+plugins: anyio-4.16.0
+collected 4 items
+
+testing/lab10/test_request_service.py::test_create_request_success PASSED                                                                                                                                                                                                                                    [ 25%]
+testing/lab10/test_request_service.py::test_blocked_user_cannot_create_request PASSED                                                                                                                                                                                                                        [ 50%]
+testing/lab10/test_request_service.py::test_assign_executor_success PASSED                                                                                                                                                                                                                                   [ 75%]
+testing/lab10/test_request_service.py::test_complete_assigned_request_success PASSED                                                                                                                                                                                                                         [100%]
+
+================================================================================================================================================ warnings summary =================================================================================================================================================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  E:\Program files\PyCharm\Retinscky_Artem_isip308_RequestSystem\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+========================================================================================================================================== 4 passed, 1 warning in 0.11s ===========================================================================================================================================
+(.venv) PS E:\Program files\PyCharm\Retinscky_Artem_isip308_RequestSystem> python -m pytest testing/lab10 -v
+=============================================================================================================================================== test session starts ===============================================================================================================================================
+platform win32 -- Python 3.13.2, pytest-9.2.0, pluggy-1.7.0 -- E:\Program files\PyCharm\Retinscky_Artem_isip308_RequestSystem\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: E:\Program files\PyCharm\Retinscky_Artem_isip308_RequestSystem
+plugins: anyio-4.16.0
+collected 10 items
+
+testing/lab10/test_request_access.py::test_applicant_cannot_view_another_users_request PASSED                                                                                                                                                                                                                [ 10%]
+testing/lab10/test_request_access.py::test_executor_cannot_complete_another_executors_request PASSED                                                                                                                                                                                                         [ 20%]
+testing/lab10/test_request_api.py::test_create_request_api_success PASSED                                                                                                                                                                                                                                    [ 30%]
+testing/lab10/test_request_api.py::test_create_request_api_invalid_data PASSED                                                                                                                                                                                                                               [ 40%]
+testing/lab10/test_request_api.py::test_create_request_api_invalid_category PASSED                                                                                                                                                                                                                           [ 50%]
+testing/lab10/test_request_api.py::test_get_nonexistent_request_api PASSED                                                                                                                                                                                                                                   [ 60%]
+testing/lab10/test_request_service.py::test_create_request_success PASSED                                                                                                                                                                                                                                    [ 70%]
+testing/lab10/test_request_service.py::test_blocked_user_cannot_create_request PASSED                                                                                                                                                                                                                        [ 80%]
+testing/lab10/test_request_service.py::test_assign_executor_success PASSED                                                                                                                                                                                                                                   [ 90%]
+testing/lab10/test_request_service.py::test_complete_assigned_request_success PASSED                                                                                                                                                                                                                         [100%]
+
+================================================================================================================================================ warnings summary =================================================================================================================================================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  E:\Program files\PyCharm\Retinscky_Artem_isip308_RequestSystem\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+========================================================================================================================================== 10 passed, 1 warning in 0.48s ==========================================================================================================================================
